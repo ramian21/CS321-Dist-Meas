@@ -13,7 +13,7 @@ def find_marker(image):
 	gray = cv2.GaussianBlur(gray, (5, 5), 0)
 	edged = cv2.Canny(gray, 35, 125)
 #	edged = cv2.Canny(gray, 15, 125)
-	cv2.imshow("gray", edged)
+	#cv2.imshow("gray", edged)
 	# find the contours in the edged image and keep the largest one;
 	# we'll assume that this is our piece of paper in the image
 	cnts = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -59,8 +59,9 @@ for imagePath in sorted(paths.list_images("images")):
 	dim = (width, height)
 	image = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
 	marker = find_marker(image)
+        print(marker)
 	inches = distance_to_camera(KNOWN_WIDTH, focalLength, marker[1][0])
-	print(inches)
+	#print(inches)
 
 	# draw a bounding box around the image and display it
 	box = cv2.cv.BoxPoints(marker) if imutils.is_cv2() else cv2.boxPoints(marker)
@@ -69,5 +70,5 @@ for imagePath in sorted(paths.list_images("images")):
 	cv2.putText(image, "%.2fft" % (inches / 12),
 		(image.shape[1] - 200, image.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX,
 		2.0, (0, 255, 0), 3)
-	cv2.imshow("image", image)
-	cv2.waitKey(0)
+	#cv2.imshow("image", image)
+	#cv2.waitKey(0)

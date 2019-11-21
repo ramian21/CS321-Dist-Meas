@@ -27,14 +27,14 @@ def find_marker(image):
 		cY = int((M["m01"] / M["m00"]) * ratio)
 		shape = sd.detect(c)
 	
-		num = 0.01 * cv2.arcLength(c, True)
+		num = 0.04 * cv2.arcLength(c, True)
 		approx = cv2.approxPolyDP(c, num, True)
 #		if len(approx)==5:
 #		    print "pentagon"
 #		    thing = cv2.contourArea(c, false)
 		if len(approx)==4:
 		    print( "rectangle")
-		    thing = cv2.contourArea(c, false)
+		    thing = cv2.contourArea(c, False)
                 # multiply the contour (x, y)-coordinates by the resize ratio,
 		# then draw the contours and the name of the shape on the image
 		c = c.astype("float")
@@ -45,8 +45,8 @@ def find_marker(image):
 	#		0.5, (255, 255, 255), 2)
 	
 		# show the output image
-		cv2.imshow("Image", image)
-		cv2.waitKey(0)
+		# cv2.imshow("Image", image)
+		# cv2.waitKey(0)
 	
 
 	# compute the bounding box of the of the paper region and return it
@@ -62,7 +62,7 @@ KNOWN_DISTANCE = 36
 
 # initialize the known object width, which in this case, the piece of
 # paper is 12 inches wide
-KNOWN_WIDTH = 2
+KNOWN_WIDTH = 11
 
 # load the furst image that contains an object that is KNOWN TO BE 2 feet
 # from our camera, then find the paper marker in the image, and initialize
@@ -74,6 +74,7 @@ height = int(img.shape[0] * scale_percent / 100)
 dim = (width, height)
 image = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
 marker = find_marker(image)
+print(marker[1][0])
 focalLength =  (marker[1][0] * KNOWN_DISTANCE) / KNOWN_WIDTH
 # print(focalLength)
 
@@ -98,5 +99,5 @@ for imagePath in sorted(paths.list_images("images")):
 	cv2.putText(image, "%.2fft" % (inches / 12),
 		(image.shape[1] - 200, image.shape[0] - 20), cv2.FONT_HERSHEY_SIMPLEX,
 		2.0, (0, 255, 0), 3)
-	cv2.imshow("image", image)
+	# cv2.imshow("image", image)
 	cv2.waitKey(0)
